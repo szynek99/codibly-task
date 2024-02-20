@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "react-app",
+    "plugin:unicorn/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "unicorn/no-nul": "off",
+    "unicorn/prevent-abbreviations": "off"
+  }
+}
