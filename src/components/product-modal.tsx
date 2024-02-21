@@ -1,8 +1,9 @@
-import { Box, List, Divider, ListItem, ListItemText } from '@mui/material';
+import { Box, List, Divider, ListItem, ListItemText, Typography } from '@mui/material';
 import { getProduct } from 'api/services';
 import { Product } from 'api/types';
 import { FC, useEffect, useState } from 'react';
 import { ModalComponent } from './modal';
+import toast from 'react-hot-toast';
 
 type ProductModalProps = {
   open: boolean;
@@ -17,17 +18,26 @@ export const ProductModal: FC<ProductModalProps> = ({ open, handleClose, product
   useEffect(() => {
     setLoading(true);
     if (productId) {
-      getProduct(productId).then((data) => {
-        setProduct(data);
-        setLoading(false);
-      });
+      getProduct(productId)
+        .then((data) => {
+          setProduct(data);
+        })
+        .catch((error) => {
+          toast.error(error.message);
+          handleClose();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [productId]);
+  }, [handleClose, productId]);
 
   return (
     <ModalComponent open={open} handleClose={handleClose}>
       {loading ? (
-        <Box height={300}>Loading...</Box>
+        <Typography height={300} textAlign="center">
+          Loading...
+        </Typography>
       ) : (
         <List sx={{ paddingY: 0 }}>
           <ListItem>

@@ -1,11 +1,11 @@
-import { Box, Typography } from '@mui/material';
 import { getProducts } from 'api/services';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { ProductsTable } from './product-table';
 import { Pagination } from './pagination';
 import { useParams } from 'hooks/use-params';
-import { useProductsStore } from 'store/use-products-store';
+import { Box, Typography } from '@mui/material';
+import { ProductsTable } from './product-table';
 import { useMetaStore } from 'store/use-meta-store';
+import { useProductsStore } from 'store/use-products-store';
+import { FC, useCallback, useEffect, useState } from 'react';
 
 export const ProductsListing: FC = () => {
   const { getParams } = useParams();
@@ -21,7 +21,7 @@ export const ProductsListing: FC = () => {
       if (!result) {
         return;
       }
-      setError('');
+      setError(undefined);
       setProducts(result.data);
       setMeta(result.meta);
     } catch (error) {
@@ -49,16 +49,18 @@ export const ProductsListing: FC = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <Typography textAlign="center" marginTop={6} mx={{ xs: 1, xl: 0 }}>
+        Loading...
+      </Typography>
+    );
+  }
+
   return (
     <Box marginTop={6} mx={{ xs: 1, xl: 0 }}>
-      {loading ? (
-        <Typography textAlign="center">Loading...</Typography>
-      ) : (
-        <>
-          <ProductsTable />
-          <Pagination />
-        </>
-      )}
+      <ProductsTable />
+      <Pagination />
     </Box>
   );
 };

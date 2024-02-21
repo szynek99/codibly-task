@@ -3,30 +3,30 @@ import { styled } from '@mui/material/styles';
 import { useParams } from 'hooks/use-params';
 import { TextField, TextFieldProps } from '@mui/material';
 
-const SearchField = styled(TextField)<TextFieldProps>(({ theme }) => ({
+const SearchField = styled(TextField)<TextFieldProps>(() => ({
   width: 150,
   '& label': {
-    color: theme.palette.common.white,
+    color: 'white',
   },
   '& input': {
-    color: theme.palette.common.white,
+    color: 'white',
   },
   '& label.Mui-focused': {
-    color: theme.palette.common.white,
+    color: 'white',
   },
   '& .MuiInput-underline:after': {
-    borderBottomColor: theme.palette.common.white,
+    borderBottomColor: 'white',
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: theme.palette.common.white,
+      borderColor: 'white',
     },
     '&:hover fieldset': {
-      borderColor: theme.palette.common.white,
+      borderColor: 'white',
       borderWidth: 2,
     },
     '&.Mui-focused fieldset': {
-      borderColor: theme.palette.common.white,
+      borderColor: 'white',
     },
   },
   '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {

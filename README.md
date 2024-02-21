@@ -37,11 +37,10 @@ https://reqres.in/api/products/2
 ```
 
 To overcome this "bug", [`services.ts`](./src/api//services.ts) contains a condition that checks if `id` parameter was provided during fetch and parses the response to the right format.  <br />
-Also parameter `is` causes to ignore other parameters like `page`
+Also parameter `id` causes to ignore other parameters like `page`
 
 ```
-https://reqres.in/api/products?page=2&id=2
+https://reqres.in/api/products?page=20&id=2
 ```
-In my opinion request above shouldn't return any value, but it returns (`page` value ignored)
+Also above request returns value (`page` value ignored)
 
-Unit tests are not provided because there is no place where they would be of any value

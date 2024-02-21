@@ -1,5 +1,4 @@
-import { Modal, Box, colors, IconButton } from '@mui/material';
-
+import { Modal, Box, IconButton } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -19,7 +18,7 @@ export const ModalComponent: FC<ModalComponentProps> = ({ open, handleClose, chi
         padding={2}
         boxShadow={24}
         width={300}
-        sx={{ transform: 'translate(-50%, -50%)', backgroundColor: colors.grey[100] }}
+        sx={{ transform: 'translate(-50%, -50%)', backgroundColor: 'grey.100' }}
       >
         <Box display="flex" justifyContent="flex-end">
           <IconButton onClick={handleClose}>

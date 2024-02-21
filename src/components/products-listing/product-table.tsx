@@ -1,15 +1,4 @@
-import {
-  Box,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  alpha,
-  colors,
-} from '@mui/material';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, alpha } from '@mui/material';
 import { ProductModal } from 'components/product-modal';
 import { FC, useState } from 'react';
 import { useProductsStore } from 'store/use-products-store';
@@ -23,7 +12,7 @@ export const ProductsTable: FC = () => {
     <Box marginTop={6} mx={{ xs: 1, xl: 0 }}>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead sx={{ backgroundColor: colors.grey[100] }}>
+          <TableHead sx={{ backgroundColor: 'grey.100' }}>
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell align="center">Name</TableCell>
@@ -31,30 +20,37 @@ export const ProductsTable: FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
+            {products.map(({ id, color, name, year }) => (
               <TableRow
-                key={product.id}
+                key={id}
                 sx={{
                   cursor: 'pointer',
-                  backgroundColor: product.color,
+                  backgroundColor: color,
                   '&:hover': {
-                    backgroundColor: alpha(product.color, 0.8),
+                    backgroundColor: alpha(color, 0.8),
                   },
                 }}
                 onClick={() => {
-                  setPickedProduct(product.id);
+                  setPickedProduct(id);
                   setIsModal(true);
                 }}
               >
-                <TableCell>{product.id}</TableCell>
-                <TableCell align="center">{product.name}</TableCell>
-                <TableCell align="center">{product.year}</TableCell>
+                <TableCell>{id}</TableCell>
+                <TableCell align="center">{name}</TableCell>
+                <TableCell align="center">{year}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <ProductModal open={isModal} handleClose={() => setIsModal(false)} productId={pickedProduct} />
+      <ProductModal
+        open={isModal}
+        handleClose={() => {
+          setIsModal(false);
+          setPickedProduct(undefined);
+        }}
+        productId={pickedProduct}
+      />
     </Box>
   );
 };

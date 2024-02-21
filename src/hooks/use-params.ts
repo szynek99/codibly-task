@@ -1,12 +1,16 @@
 import { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-type ParamKeys = 'page' | 'per_page' | 'id';
+type NullableKeys = 'id';
+type NonNullableKeys = 'page' | 'per_page';
+type ParamKeys = NullableKeys | NonNullableKeys;
 
-const defaultParams = {
+const keys: NullableKeys[] = ['id'];
+const keysWithDefaultValue: NonNullableKeys[] = ['page', 'per_page'];
+
+const DEFAULT_PARAM_VALUES: Record<NonNullableKeys, string> = {
   page: '1',
   per_page: '5',
-  id: '',
 };
 
 export const useParams = () => {
@@ -28,11 +32,11 @@ export const useParams = () => {
 
   const getParams = useCallback(() => {
     const params = {} as Record<ParamKeys, string>;
-    for (const key of ['page', 'per_page'] as ParamKeys[]) {
-      params[key] = getParam(key) || defaultParams[key];
+    for (const key of keysWithDefaultValue) {
+      params[key] = getParam(key) || DEFAULT_PARAM_VALUES[key];
     }
 
-    for (const key of ['id'] as ParamKeys[]) {
+    for (const key of keys) {
       if (getParam(key)) {
         params[key] = getParam(key);
       }
