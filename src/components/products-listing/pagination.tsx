@@ -18,7 +18,7 @@ export const Pagination: FC = () => {
         setParam('per_page', value);
         setParam('page', '1');
       }}
-      rowsPerPageOptions={[2, 6, 10]}
+      rowsPerPageOptions={[2, 5, 10]}
       labelRowsPerPage="Per page"
     />
   );

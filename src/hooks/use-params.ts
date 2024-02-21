@@ -5,7 +5,7 @@ type ParamKeys = 'page' | 'per_page';
 
 const defaultParams = {
   page: '1',
-  per_page: '6',
+  per_page: '5',
 };
 
 export const useParams = () => {

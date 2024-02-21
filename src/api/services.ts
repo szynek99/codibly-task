@@ -1,6 +1,6 @@
 import { instance } from './instance';
 import { ROUTES } from './routes';
-import { ProductsResponse } from './types';
+import { Product, ProductsResponse } from './types';
 
 export const getProducts = async (searchParams: Record<string, string>) => {
   try {
@@ -17,6 +17,15 @@ export const getProducts = async (searchParams: Record<string, string>) => {
         total_pages,
       },
     };
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getProduct = async (id: number) => {
+  try {
+    const response = await instance.get<{ data: Product }>(`${ROUTES.products}/${id}`);
+
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }
