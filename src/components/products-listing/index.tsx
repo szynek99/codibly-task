@@ -8,7 +8,7 @@ import { useParams } from 'hooks/use-params';
 import { useProductsStore } from 'store/use-products-store';
 import { useMetaStore } from 'store/use-meta-store';
 
-export const Listing: FC = () => {
+export const ProductsListing: FC = () => {
   const { getParams } = useParams();
   const [loading, setLoading] = useState(true);
   const setMeta = useMetaStore((state) => state.setMeta);
