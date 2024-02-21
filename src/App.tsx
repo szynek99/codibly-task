@@ -1,14 +1,15 @@
-import { Box, Typography } from '@mui/material';
-import { Navbar } from 'components/navbar';
-import React from 'react';
 import theme from 'theme';
+import { Box } from '@mui/material';
+import React from 'react';
+import { Navbar } from 'components/navbar';
+import { Listing } from 'components/listing';
 
 function App() {
   return (
     <div>
       <Navbar />
       <Box component="main" maxWidth={theme.breakpoints.values.desktop} margin="auto">
-        <Typography>home</Typography>
+        <Listing />
       </Box>
     </div>
   );
