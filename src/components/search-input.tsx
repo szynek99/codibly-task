@@ -1,6 +1,7 @@
-import { TextField, TextFieldProps } from '@mui/material';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
+import { useParams } from 'hooks/use-params';
+import { TextField, TextFieldProps } from '@mui/material';
 
 const SearchField = styled(TextField)<TextFieldProps>(({ theme }) => ({
   width: 150,
@@ -37,5 +38,28 @@ const SearchField = styled(TextField)<TextFieldProps>(({ theme }) => ({
 }));
 
 export const SearchInput: FC = () => {
-  return <SearchField label="Search id" type="number" size="small" />;
+  const [inputValue, setInputValue] = useState<string>();
+  const { getParam, setParam } = useParams();
+
+  useEffect(() => {
+    const setSearch = setTimeout(() => {
+      setParam('id', inputValue);
+    }, 200);
+
+    return () => clearTimeout(setSearch);
+  }, [inputValue, setParam]);
+
+  useEffect(() => {
+    setInputValue(getParam('id'));
+  }, [getParam]);
+
+  return (
+    <SearchField
+      label="Search by id"
+      type="number"
+      size="small"
+      value={inputValue || ''}
+      onChange={(e) => setInputValue(e.target.value)}
+    />
+  );
 };

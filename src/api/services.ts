@@ -1,13 +1,32 @@
 import { isAxiosError } from 'axios';
-import { instance } from './instance';
+import isArray from 'lodash-es/isArray';
 import { ROUTES } from './routes';
+import { instance } from './instance';
 import { Product, ProductsResponse } from './types';
 
 export const getProducts = async (searchParams: Record<string, string>) => {
   try {
     const searchQuery = new URLSearchParams(searchParams).toString();
-    const response = await instance.get<ProductsResponse>(`${ROUTES.products}?${searchQuery}`);
-    const { data, per_page, page, total, total_pages } = response.data;
+    const response = await instance.get<ProductsResponse | { data: Product }>(`${ROUTES.products}?${searchQuery}`);
+
+    const responseData = response.data;
+
+    /// README - Odd API  behaviour walkaround
+    if (!isArray(responseData.data)) {
+      const singleProduct = responseData.data;
+      return {
+        data: [singleProduct],
+        meta: {
+          per_page: 1,
+          page: 1,
+          total: 1,
+          total_pages: 1,
+        },
+      };
+    }
+    /// README - Odd API  behaviour walkaround
+
+    const { data, per_page, page, total, total_pages } = responseData as ProductsResponse;
 
     return {
       data,
@@ -20,6 +39,9 @@ export const getProducts = async (searchParams: Record<string, string>) => {
     };
   } catch (error) {
     if (isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        throw new Error('no products found');
+      }
       if (error.response?.status?.toString().startsWith('4')) {
         throw new Error('client error try again');
       }
@@ -30,6 +52,7 @@ export const getProducts = async (searchParams: Record<string, string>) => {
     throw new Error('error fetching products');
   }
 };
+
 export const getProduct = async (id: number) => {
   try {
     const response = await instance.get<{ data: Product }>(`${ROUTES.products}/${id}`);

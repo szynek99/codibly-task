@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { getProducts } from 'api/services';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { ProductsTable } from './product-table';
 import { Pagination } from './pagination';
 import { useParams } from 'hooks/use-params';
@@ -14,24 +14,32 @@ export const ProductsListing: FC = () => {
   const setMeta = useMetaStore((state) => state.setMeta);
   const setProducts = useProductsStore((state) => state.setProducts);
 
-  useEffect(() => {
+  const handleFetchProducts = useCallback(async () => {
     setLoading(true);
-
-    getProducts(getParams())
-      .then((result) => {
-        if (!result) {
-          return;
-        }
-        setProducts(result.data);
-        setMeta(result.meta);
-      })
-      .catch((error) => {
+    try {
+      const result = await getProducts(getParams());
+      if (!result) {
+        return;
+      }
+      setError('');
+      setProducts(result.data);
+      setMeta(result.meta);
+    } catch (error) {
+      if (error instanceof Error) {
         setError(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      }
+    } finally {
+      setLoading(false);
+    }
   }, [getParams, setMeta, setProducts]);
+
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      handleFetchProducts();
+    }, 150);
+
+    return () => clearTimeout(getData);
+  }, [handleFetchProducts]);
 
   if (error) {
     return (
