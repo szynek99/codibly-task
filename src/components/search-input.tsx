@@ -28,8 +28,14 @@ const SearchField = styled(TextField)<TextFieldProps>(({ theme }) => ({
       borderColor: theme.palette.common.white,
     },
   },
+  '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+    display: 'none',
+  },
+  '& input[type=number]': {
+    MozAppearance: 'textfield',
+  },
 }));
 
 export const SearchInput: FC = () => {
-  return <SearchField label="Search" type="number" size="small" />;
+  return <SearchField label="Search id" type="number" size="small" />;
 };

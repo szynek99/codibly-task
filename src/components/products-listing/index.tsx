@@ -1,6 +1,5 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { getProducts } from 'api/services';
-
 import { FC, useEffect, useState } from 'react';
 import { ProductsTable } from './product-table';
 import { Pagination } from './pagination';
@@ -10,32 +9,42 @@ import { useMetaStore } from 'store/use-meta-store';
 
 export const ProductsListing: FC = () => {
   const { getParams } = useParams();
+  const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
   const setMeta = useMetaStore((state) => state.setMeta);
   const setProducts = useProductsStore((state) => state.setProducts);
 
   useEffect(() => {
     setLoading(true);
+
     getProducts(getParams())
       .then((result) => {
         if (!result) {
-          console.error('No result');
           return;
         }
         setProducts(result.data);
         setMeta(result.meta);
-        setLoading(false);
       })
       .catch((error) => {
-        console.error(error);
+        setError(error.message);
+      })
+      .finally(() => {
         setLoading(false);
       });
-  }, [setLoading, setProducts, getParams, setMeta]);
+  }, [getParams, setMeta, setProducts]);
+
+  if (error) {
+    return (
+      <Typography marginTop={6} mx={{ xs: 1, xl: 0 }} textAlign="center">
+        {error}
+      </Typography>
+    );
+  }
 
   return (
     <Box marginTop={6} mx={{ xs: 1, xl: 0 }}>
       {loading ? (
-        <Box>Loading...</Box>
+        <Typography textAlign="center">Loading...</Typography>
       ) : (
         <>
           <ProductsTable />

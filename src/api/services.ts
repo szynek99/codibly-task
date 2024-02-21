@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios';
 import { instance } from './instance';
 import { ROUTES } from './routes';
 import { Product, ProductsResponse } from './types';
@@ -18,7 +19,15 @@ export const getProducts = async (searchParams: Record<string, string>) => {
       },
     };
   } catch (error) {
-    console.error(error);
+    if (isAxiosError(error)) {
+      if (error.response?.status?.toString().startsWith('4')) {
+        throw new Error('client error try again');
+      }
+      if (error.response?.status?.toString().startsWith('5')) {
+        throw new Error('server error try again later');
+      }
+    }
+    throw new Error('error fetching products');
   }
 };
 export const getProduct = async (id: number) => {
@@ -27,6 +36,9 @@ export const getProduct = async (id: number) => {
 
     return response.data.data;
   } catch (error) {
-    console.error(error);
+    if (isAxiosError(error) && error.response?.status?.toString().startsWith('5')) {
+      throw new Error('server error try again later');
+    }
+    throw new Error('error fetching product');
   }
 };
