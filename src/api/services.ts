@@ -7,17 +7,20 @@ import { Product, ProductsResponse } from './types';
 export const getProducts = async (searchParams: Record<string, string>) => {
   try {
     const searchQuery = new URLSearchParams(searchParams).toString();
+
     const response = await instance.get<ProductsResponse | { data: Product }>(`${ROUTES.products}?${searchQuery}`);
 
     const responseData = response.data;
 
     /// README - Odd API  behaviour walkaround
     if (!isArray(responseData.data)) {
+      const per_page = Number(searchParams['per_page']);
+
       const singleProduct = responseData.data;
       return {
         data: [singleProduct],
         meta: {
-          per_page: 1,
+          per_page,
           page: 1,
           total: 1,
           total_pages: 1,

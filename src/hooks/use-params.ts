@@ -28,8 +28,14 @@ export const useParams = () => {
 
   const getParams = useCallback(() => {
     const params = {} as Record<ParamKeys, string>;
-    for (const key of ['page', 'per_page', 'id'] as ParamKeys[]) {
+    for (const key of ['page', 'per_page'] as ParamKeys[]) {
       params[key] = getParam(key) || defaultParams[key];
+    }
+
+    for (const key of ['id'] as ParamKeys[]) {
+      if (getParam(key)) {
+        params[key] = getParam(key);
+      }
     }
 
     return params;

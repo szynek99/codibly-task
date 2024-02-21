@@ -22,7 +22,7 @@ export const ModalComponent: FC<ModalComponentProps> = ({ open, handleClose, chi
         sx={{ transform: 'translate(-50%, -50%)', backgroundColor: colors.grey[100] }}
       >
         <Box display="flex" justifyContent="flex-end">
-          <IconButton>
+          <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Box>
